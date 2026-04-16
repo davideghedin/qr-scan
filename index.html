@@ -76,12 +76,12 @@
         (decodedText) => {
           scanner.stop();
 
-          readerDiv.style.display = "none";
-          resultDiv.innerHTML = `
+          //readerDiv.style.display = "none";
+          resultDiv.innerHTML = '
             <div class="success">✔ QR Code letto</div>
             <div>${decodedText}</div>
-          `;
-          popitup("https://docs.google.com/forms/d/e/1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA/viewform?usp=pp_url&entry.622568697=" + encodeURIComponent(decodedText));
+          ';
+          popitup('https://docs.google.com/forms/d/e/1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA/viewform?usp=pp_url&entry.622568697=' + encodeURIComponent(decodedText));
         }
       ).catch(err => {
         resultDiv.innerText = "Errore fotocamera: " + err;
