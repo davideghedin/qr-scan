@@ -1,97 +1,51 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Scanner QR Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Libreria ufficiale -->
+  <title>Scansione QR</title>
   <script src="https://unpkg.com/html5-qrcode"></script>
-
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: #f2f2f7;
-      text-align: center;
-      padding: 20px;
-    }
-
-    #reader {
-      width: 100%;
-      max-width: 350px;
-      margin: auto;
-      display: none;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 14px 20px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      background: #007aff;
-      color: white;
-      cursor: pointer;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-      word-break: break-all;
-    }
-
-    .success {
-      color: #34c759;
-      font-size: 22px;
-      font-weight: bold;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; }
+    #reader { width: 300px; margin: auto; }
   </style>
 </head>
 <body>
 
-  <h2>Scansiona QR Code</h2>
+<h2>Scansiona il QR Code</h2>
+<div id="reader"></div>
+<p id="status">In attesa della scansione...</p>
 
-  <button id="startBtn">📷 Avvia scansione</button>
+<script>
+  const FORM_ID = "1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA";
+  const ENTRY_ID = "entry.622568697"; // cambia con il tuo entry
 
-  <div id="reader"></div>
+  function inviaAGoogleForms(valoreQR) {
+    const url = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
 
-  <div id="result"></div>
+    const formData = new FormData();
+    formData.append(ENTRY_ID, valoreQR);
 
-  <script>
-    const startBtn = document.getElementById("startBtn");
-    const readerDiv = document.getElementById("reader");
-    const resultDiv = document.getElementById("result");
-
-    let scanner;
-
-    startBtn.addEventListener("click", () => {
-      readerDiv.style.display = "block";
-      startBtn.style.display = "none";
-
-      scanner = new Html5Qrcode("reader");
-
-      scanner.start(
-        { facingMode: "environment" }, // ✅ camera posteriore
-        { fps: 10, qrbox: 250 },
-        (decodedText) => {
-          scanner.stop();
-
-          //readerDiv.style.display = "none";
-          resultDiv.innerHTML = "<div class="success">✔ QR Code letto</div><div>${decodedText}</div>";
-          
-          popitup("https://docs.google.com/forms/d/e/1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA/viewform?usp=pp_url&entry.622568697=" + encodeURIComponent(decodedText));
-        }
-      ).catch(err => {
-        resultDiv.innerText = "Errore fotocamera: " + err;
-      });
+    fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      body: formData
     });
 
-    function popitup(url) {
-        newwindow=window.open(url,'name','height=200,width=150');
-        if (window.focus) {newwindow.focus()}
-        return false;
-    }
-  </script>
+    document.getElementById("status").innerText =
+      "QR letto e inviato correttamente ✅";
+  }
+
+  const qrCodeSuccessCallback = (decodedText) => {
+    html5QrcodeScanner.clear();
+    inviaAGoogleForms(decodedText);
+  };
+
+  const html5QrcodeScanner =
+    new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+
+  html5QrcodeScanner.render(qrCodeSuccessCallback);
+</script>
 
 </body>
 </html>
