@@ -81,13 +81,18 @@
             <div class="success">✔ QR Code letto</div>
             <div>${decodedText}</div>
           `;
-
-          window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA/viewform?usp=pp_url&entry.622568697=" + encodeURIComponent(decodedText);
+          popitup("https://docs.google.com/forms/d/e/1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA/viewform?usp=pp_url&entry.622568697=" + encodeURIComponent(decodedText));
         }
       ).catch(err => {
         resultDiv.innerText = "Errore fotocamera: " + err;
       });
     });
+
+    function popitup(url) {
+        newwindow=window.open(url,'name','height=200,width=150');
+        if (window.focus) {newwindow.focus()}
+        return false;
+    }
   </script>
 
 </body>
