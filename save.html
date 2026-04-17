@@ -134,7 +134,6 @@
     </div>
 
     <script>
-        let scanner;
 
         function openTab(evt, tabName) {
             // Nascondi tutte le pagine
@@ -163,23 +162,59 @@
             }
         }
 
-        function startScanner() {
-            scanner = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+//*********************************************************************************
+    const FORM_ID = "1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA";
+    const ENTRY_ID = "entry.622568697"; 
+    
+    const startBtn = document.getElementById("startBtn");
+    const readerDiv = document.getElementById("reader");
+    const resultDiv = document.getElementById("result");
 
-            scanner.start(
-                { facingMode: "environment" }, 
-                config, 
-                (text) => {
-                    document.getElementById('scanned-result').innerText = text;
-                    // Opzionale: emetti un suono o vibrazione
-                    if(navigator.vibrate) navigator.vibrate(100);
-                }
-            ).catch(err => {
-                document.getElementById('scanned-result').innerText = "Errore: " + err;
-            });
+    let scanner;
+
+    startBtn.addEventListener("click", () => {
+      readerDiv.style.display = "block";
+      //startBtn.style.display = "none";
+
+      scanner = new Html5Qrcode("reader");
+
+      scanner.start(
+        { facingMode: "environment" }, // ✅ camera posteriore
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+          scanner.stop();
+
+          //readerDiv.style.display = "none";
+          resultDiv.innerHTML = `
+            <div class="success">✔ QR Code letto</div>
+            <div>${decodedText}</div>
+          `;
+          inviaAGoogleForms(decodedText);          
         }
+      ).catch(err => {
+        resultDiv.innerText = "Errore fotocamera: " + err;
+      });
+    });
+    
+  function inviaAGoogleForms(valoreQR) {
+    const url = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
 
+    const formData = new FormData();
+    formData.append(ENTRY_ID, valoreQR);
+
+    fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      body: formData
+    });
+
+    document.getElementById("status").innerText =
+      "QR letto e inviato correttamente ✅";
+  }    
+
+
+//*********************************************************************************
+        
         // Avvio iniziale
         window.onload = startScanner;
     </script>
