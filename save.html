@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Barcode & Sheets App</title>
+    
+    <!-- Libreria per Barcode -->
+    <script src="https://unpkg.com"></script>
 
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background: #f2f2f7; }
+        
+        /* Navigazione Tab */
+        .tab-bar { position: fixed; bottom: 0; width: 100%; height: 60px; background: #fff; border-top: 1px solid #d1d1d6; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .tab-btn { background: none; border: none; color: #8e8e93; font-size: 14px; display: flex; flex-direction: column; align-items: center; }
+        .tab-btn.active { color: #007aff; }
+
+        /* Contenuti */
+        .page { display: none; padding: 20px; height: calc(100vh - 80px); overflow: auto; }
+        .page.active { display: block; }
+
+        /* Scanner */
+        #reader { width: 100%; max-width: 500px; margin: auto; border-radius: 12px; overflow: hidden; }
+        #result { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; text-align: center; font-weight: bold; }
+
+        /* Google Sheet */
+        iframe { width: 100%; height: 100%; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <!-- PAGINA 1: BARCODE -->
+    <div id="barcode-page" class="page active">
+        <h2 style="text-align:center">Scannerizza Barcode</h2>
+        <div id="reader"></div>
+        <div id="result">In attesa di scansione...</div>
+    </div>
+
+    <!-- PAGINA 2: GOOGLE SHEET -->
+    <div id="sheet-page" class="page">
+        <!-- SOSTITUISCI L'URL SOTTO CON IL TUO LINK "PUBBLICA SUL WEB" DI GOOGLE SHEETS -->
+        <iframe src="https://google.com"></iframe>
+    </div>
+
+    <!-- TAB BAR -->
+    <nav class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('barcode-page', this)">
+            <span>📷</span>
+            <span>Scanner</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('sheet-page', this)">
+            <span>📊</span>
+            <span>Foglio</span>
+        </button>
+    </nav>
+
+    <script>
+        // Gestione Tab
+        function switchTab(pageId, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            btn.classList.add('active');
+            
+            // Ferma lo scanner se si cambia tab
+            if (pageId !== 'barcode-page' && html5QrCode) {
+                html5QrCode.stop().catch(err => console.log(err));
+            }
+        }
+
+        // Configurazione Barcode
+        const html5QrCode = new Html5Qrcode("reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+
+        const startScanner = () => {
+            html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+                document.getElementById('result').innerText = "Rilevato: " + decodedText;
+                // Qui puoi aggiungere logica per inviare il dato al foglio
+                alert("Codice scansionato: " + decodedText);
+            });
+        };
+
+        // Avvia lo scanner all'apertura
+        window.onload = startScanner;
+    </script>
+</body>
+</html>
