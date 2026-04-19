@@ -22,7 +22,7 @@ const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9n
 function getLastRecord() {
 
     fetch(webAppUrl, {
-      method: "POST",
+      method: "GET",
       mode: "no-cors",
       body: formData
     }
