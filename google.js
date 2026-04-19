@@ -17,7 +17,7 @@ function inviaAGoogleForms(valoreQR) {
       "QR letto e inviato correttamente ✅";
 }    
 
-const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&amp;single=true&amp;widget=true&amp;headers=false"; // Incolla qui l'URL di Google
+const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&amp"; // Incolla qui l'URL di Google
 
 function getLastRecord() {
 
