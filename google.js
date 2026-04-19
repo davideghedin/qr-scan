@@ -13,9 +13,7 @@ function inviaAGoogleForms(valoreQR) {
       mode: "no-cors",
       body: formData
     });
-
-    document.getElementById("result").innerText =
-      "QR letto e inviato correttamente ✅";
+    return  "QR letto e inviato correttamente ✅";
 }    
 
 function postToGoogleSheet2(name) {
