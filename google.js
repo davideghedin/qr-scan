@@ -31,7 +31,7 @@ function postToGoogleSheet2(name) {
     });
 
     document.getElementById("status").innerText =
-      "QR letto e inviato correttamente ✅";
+      "Nome inviato correttamente ✅";
 }
 
 const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pub?output=csv"; // Incolla qui l'URL di Google
