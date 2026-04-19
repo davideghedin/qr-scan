@@ -16,3 +16,22 @@ function inviaAGoogleForms(valoreQR) {
     document.getElementById("status").innerText =
       "QR letto e inviato correttamente ✅";
 }    
+
+const webAppUrl = "URL_DELLA_TUA_WEB_APP_QUI"; // Incolla qui l'URL di Google
+
+function getLastRecord() {
+
+fetch(webAppUrl)
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            document.getElementById('output').innerText = data.error;
+        } else {
+            // Unisce i valori delle colonne con un separatore
+            document.getElementById('output').innerText = data.join(" | ");
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById('output').innerText = "Errore di connessione";
+    });
