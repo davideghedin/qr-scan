@@ -18,7 +18,7 @@ function inviaAGoogleForms(valoreQR) {
       "QR letto e inviato correttamente ✅";
 }    
 
-function string postToGoogleSheet2(name) {
+function postToGoogleSheet2(name) {
     const url = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
 
     const formData = new FormData();
