@@ -32,7 +32,7 @@
 
               <h2>Cognome e nome</h2>
               <form id="myForm">  
-                  <input type="text" id="name"></input>
+                  <input type="text" id="myInput"></input>
                   <button type="submit">Salva</button>
               </form>
         </div>
@@ -104,7 +104,9 @@
     });
 
 //*********************************************************************************
-
+    // 1. Riferimenti agli elementi DOM
+    const form = document.getElementById('myForm');
+    const input = document.getElementById('myInput');
     // 2. Ascoltatore dell'evento submit
     form.addEventListener('submit', function(event) {
         // Impedisce al form di ricaricare la pagina
