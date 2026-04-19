@@ -22,13 +22,13 @@
     <div class="folder-body">
         <!-- PAGINA SCANNER -->
         <div id="scan" class="page active">
-              <h2>Scansiona QR Code</h2>
+            <h2>Scansiona QR Code</h2>
             
-              <button id="startBtn">📷 Avvia scansione</button>
+            <button id="startBtn">📷 Avvia scansione</button>
+              
+            <div id="reader"></div>
             
-              <div id="reader"></div>
-            
-              <div id="result"></div>
+            <div id="result1"></div>
               
             <h3><center>--OPPURE--</center></h3>
             
@@ -38,6 +38,9 @@
                   <br/>
                   <button type="submit">Salva</button>
               </form>
+
+            <div id="result2"></div>
+
         </div>
 
         <!-- PAGINA GOOGLE SHEET -->
@@ -78,7 +81,8 @@
 //********************************************************************************* 
     const startBtn = document.getElementById("startBtn");
     const readerDiv = document.getElementById("reader");
-    const resultDiv = document.getElementById("result");
+    const resultDiv1 = document.getElementById("result1");
+    const resultDiv2 = document.getElementById("result2");    
 
     let scanner;
 
@@ -99,7 +103,7 @@
             <div class="success">✔ QR Code letto</div>
             <div>${decodedText}</div>
           `;
-          inviaAGoogleForms(decodedText);       
+          resultDiv1.innerText = inviaAGoogleForms( decodedText );       
         }
       ).catch(err => {
         resultDiv.innerText = "Errore fotocamera: " + err;
@@ -117,7 +121,7 @@
         // Recupera il valore
         const valoreInput = input.value;
         // 3. Lancia la funzione JS
-        resultDiv.innerText = postToGoogleSheet2( valoreInput );
+        resultDiv2.innerText = postToGoogleSheet2( valoreInput );
         input.value = "";
     });        
 
