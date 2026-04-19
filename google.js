@@ -55,4 +55,5 @@ function getLastRecord() {
             console.error(err);
             document.getElementById('output').innerText = "Errore di connessione";
         });
+    )
 }
