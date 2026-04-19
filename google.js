@@ -23,8 +23,7 @@ function getLastRecord() {
 
     fetch(webAppUrl, {
       method: "GET",
-      mode: "no-cors",
-      body: formData
+      mode: "no-cors"
     }
         .then(res => res.json())
         .then(data => {
