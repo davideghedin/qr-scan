@@ -1,73 +1,89 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Scanner QR Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Libreria ufficiale -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
-
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: #f2f2f7;
-      text-align: center;
-      padding: 20px;
-    }
-
-    #reader {
-      width: 100%;
-      max-width: 350px;
-      margin: auto;
-      display: none;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 14px 20px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      background: #007aff;
-      color: white;
-      cursor: pointer;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-      word-break: break-all;
-    }
-
-    .success {
-      color: #34c759;
-      font-size: 22px;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Presenze</title> 
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="google.js"></script>
+    
+    <!-- Libreria ufficiale -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
 
-  <h2>Scansiona QR Code</h2>
+    <div class="folder-tabs">
+        <button class="tab active" onclick="openTab(event, 'scan')">Inserimento</button>
+        <button class="tab" onclick="openTab(event, 'data')">Archivio</button>
+    </div>
 
-  <button id="startBtn">📷 Avvia scansione</button>
+    <div class="folder-body">
+        <!-- PAGINA SCANNER -->
+        <div id="scan" class="page active">
+            <h2>Scansiona QR Code</h2>
+            
+            <button id="startBtn">📷 Avvia scansione</button>
+              
+            <div id="reader"></div>
+            
+            <div id="result1"></div>
+              
+            <h3><center>--OPPURE--</center></h3>
+            
+            <h2>Cognome e nome</h2>
+              <form id="myForm">  
+                  <input type="text" id="myInput"></input>
+                  <br/>
+                  <button type="submit">Salva</button>
+              </form>
 
-  <div id="reader"></div>
+            <div id="result2"></div>
 
-  <div id="result"></div>
+        </div>
 
-  <h2>Presenze salvate</h2>
+        <!-- PAGINA GOOGLE SHEET -->
+        <div id="data" class="page">
+            <a href=https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&single=true">Link</a>
+            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+        </div>
+    </div>
 
-  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+    <script>
 
-  <script>
-    const FORM_ID = "1FAIpQLSeV-QY4T_a2E07ChO0i4emFPICWW8vhhB2T0j5hZGsRa6y8JA";
-    const ENTRY_ID = "entry.622568697"; 
-    
+        function openTab(evt, tabName) {
+            // Nascondi tutte le pagine
+            const pages = document.getElementsByClassName("page");
+            for (let i = 0; i < pages.length; i++) {
+                pages[i].classList.remove("active");
+            }
+
+            // Disattiva tutte le tab
+            const tabs = document.getElementsByClassName("tab");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+
+            // Mostra la pagina corrente e attiva la tab
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+
+            // Gestione logica Scanner
+            if (tabName === 'scan') {
+                startScanner();
+            } else {
+                if (scanner) {
+                    scanner.stop().catch(e => console.log(e));
+                }
+            }
+        }
+
+//********************************************************************************* 
     const startBtn = document.getElementById("startBtn");
     const readerDiv = document.getElementById("reader");
-    const resultDiv = document.getElementById("result");
+    const resultDiv1 = document.getElementById("result1");
+    const resultDiv2 = document.getElementById("result2");    
 
     let scanner;
 
@@ -88,29 +104,35 @@
             <div class="success">✔ QR Code letto</div>
             <div>${decodedText}</div>
           `;
-          inviaAGoogleForms(decodedText);          
+          resultDiv1.innerText = inviaAGoogleForms( decodedText );       
         }
       ).catch(err => {
         resultDiv.innerText = "Errore fotocamera: " + err;
       });
     });
-    
-  function inviaAGoogleForms(valoreQR) {
-    const url = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
 
-    const formData = new FormData();
-    formData.append(ENTRY_ID, valoreQR);
+//*********************************************************************************
+    // 1. Riferimenti agli elementi DOM
+    const form = document.getElementById('myForm');
+    const input = document.getElementById('myInput');
+    // 2. Ascoltatore dell'evento submit
+    form.addEventListener('submit', function(event) {
+        // Impedisce al form di ricaricare la pagina
+        event.preventDefault(); 
+        // Recupera il valore
+        const valoreInput = input.value;
+        // 3. Lancia la funzione JS
+        resultDiv2.innerText = postToGoogleSheet2( valoreInput );
+        input.value = "";
+    });        
 
-    fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      body: formData
-    });
+//*********************************************************************************
+        
+        // Avvio iniziale
+        window.onload = startScanner;
 
-    document.getElementById("status").innerText =
-      "QR letto e inviato correttamente ✅";
-  }    
-  </script>
-
+        //getLastRecord();
+        
+    </script>
 </body>
 </html>
