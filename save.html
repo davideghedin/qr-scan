@@ -30,7 +30,11 @@
             
               <div id="result"></div>
 
-              <div id="output"></div>
+              <h2>Cognome e nome</h2>
+              <form id="myForm">  
+                  <input type="text" id="name"></input>
+                  <button type="submit">Salva</button>
+              </form>
         </div>
 
         <!-- PAGINA GOOGLE SHEET -->
@@ -98,7 +102,19 @@
         resultDiv.innerText = "Errore fotocamera: " + err;
       });
     });
-    
+
+//*********************************************************************************
+
+    // 2. Ascoltatore dell'evento submit
+    form.addEventListener('submit', function(event) {
+        // Impedisce al form di ricaricare la pagina
+        event.preventDefault(); 
+        // Recupera il valore
+        const valoreInput = input.value;
+        // 3. Lancia la funzione JS
+        postToGoogleSheet2( valoreInput );
+    });        
+
 //*********************************************************************************
         
         // Avvio iniziale
