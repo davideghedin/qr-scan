@@ -14,7 +14,7 @@ function inviaAGoogleForms(valoreQR) {
       body: formData
     });
 
-    document.getElementById("status").innerText =
+    document.getElementById("result").innerText =
       "QR letto e inviato correttamente ✅";
 }    
 
@@ -29,6 +29,8 @@ function postToGoogleSheet2(name) {
       mode: "no-cors",
       body: formData
     });
+    document.getElementById("result").innerText =
+              "Nome inviato correttamente ✅";
 }
 
 const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pub?output=csv"; // Incolla qui l'URL di Google
