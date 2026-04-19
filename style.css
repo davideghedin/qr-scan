@@ -117,3 +117,52 @@
       font-size: 22px;
       font-weight: bold;
     }
+
+
+/* Stile per input text su Mobile */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+input[type="search"] {
+    /* Dimensione font minima 16px per evitare lo zoom su iOS */
+    font-size: 16px; 
+    
+    /* Padding generoso per il tocco (tappabilità) */
+    padding: 12px 15px;
+    
+    /* Larghezza piena o quasi piena */
+    width: 100%;
+    
+    /* Box-sizing fondamentale per gestire bene padding e bordi */
+    box-sizing: border-box;
+    
+    /* Aspetto */
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Bordi arrotondati moderni */
+    
+    /* Rimuove lo stile di default di iOS/Android */
+    -webkit-appearance: none;
+    appearance: none;
+    
+    /* Colore testo e background */
+    color: #333;
+    background-color: #fff;
+    
+    /* Transizione fluida per il focus */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Stile quando l'input è attivo (focus) */
+input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+/* Placeholder stilizzato */
+input[type="text"]::placeholder {
+    color: #aaa;
+    opacity: 1;
+}
+
