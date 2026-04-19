@@ -99,7 +99,7 @@
             <div class="success">✔ QR Code letto</div>
             <div>${decodedText}</div>
           `;
-          inviaAGoogleForms(decodedText);          
+          inviaAGoogleForms(decodedText);       
         }
       ).catch(err => {
         resultDiv.innerText = "Errore fotocamera: " + err;
