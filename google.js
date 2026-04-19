@@ -21,7 +21,11 @@ const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9n
 
 function getLastRecord() {
 
-    fetch(webAppUrl)
+    fetch(webAppUrl, {
+      method: "POST",
+      mode: "no-cors",
+      body: formData
+    }
         .then(res => res.json())
         .then(data => {
             if (data.error) {
