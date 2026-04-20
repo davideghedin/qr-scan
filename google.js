@@ -68,20 +68,3 @@ const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/
   	return { headers, values: lastNonEmpty };
 	}
 
-	outputBtn.addEventListener("click", async () => {
-  	const out = document.getElementById("output");
-  	out.textContent = "Caricamento...";
-  	try {
-    	const data = await getLastRow();
-    	if (!data) {
-      	out.textContent = "Nessuna riga trovata.";
-      	return;
-    	}
-
-    	// Mostro risultato in modo leggibile
-    	const asObject = Object.fromEntries(data.headers.map((h, i) => [h, data.values[i]]));
-    	out.textContent = JSON.stringify(asObject, null, 2);
-  	} catch (e) {
-    	out.textContent = `Errore: ${e.message}`;
-  	}
-});
