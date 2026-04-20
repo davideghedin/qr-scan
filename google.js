@@ -68,7 +68,7 @@ const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/
   	return { headers, values: lastNonEmpty };
 	}
 
-	document.getElementById("btn").addEventListener("click", async () => {
+	document.getElementById("btnOutput").addEventListener("click", async () => {
   	const out = document.getElementById("output");
   	out.textContent = "Caricamento...";
   	try {
