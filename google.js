@@ -36,7 +36,7 @@ const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/
                  	`sheet=${encodeURIComponent(SHEET_NAME)}` +
                  	`&tqx=out:json`;
 
-const outputBtn = document.getElementById("outptBtn");
+const outputBtn = document.getElementById("outputBtn");
 
 	function extractGvizJson(text) {
   	// Risposta tipica: google.visualization.Query.setResponse({...});
