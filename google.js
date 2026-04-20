@@ -30,26 +30,58 @@ function postToGoogleSheet2(name) {
     return "Nome inviato correttamente ✅";
 }
 
-const webAppUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pub?output=csv"; // Incolla qui l'URL di Google
+const SPREADSHEET_ID = "e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M";
+const SHEET_NAME = "Risposte del modulo 1";
+const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?` +
+                 	`sheet=${encodeURIComponent(SHEET_NAME)}` +
+                 	`&tqx=out:json`;
 
-function getLastRecord() {
+	function extractGvizJson(text) {
+  	// Risposta tipica: google.visualization.Query.setResponse({...});
+  	const start = text.indexOf("{");
+  	const end = text.lastIndexOf("}");
+  	if (start === -1 || end === -1) throw new Error("Formato risposta inatteso");
+  	return JSON.parse(text.slice(start, end + 1));
+	}
 
-    fetch(webAppUrl, {
-      method: "GET",
-      mode: "no-cors"
-    }
-        .then(res => res.json())
-        .then(data => {
-            if (data.error) {
-                document.getElementById('output').innerText = data.error;
-            } else {
-                // Unisce i valori delle colonne con un separatore
-                document.getElementById('output').innerText = data.join(" | ");
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById('output').innerText = "Errore di connessione";
-        })
-    )
-}
+	async function getLastRow() {
+  	const res = await fetch(endpoint, { cache: "no-store" });
+  	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  	const raw = await res.text();
+  	const json = extractGvizJson(raw);
+
+  	// Riga = array di celle; ogni cella può essere null
+  	const rows = (json.table?.rows || []).map(r =>
+    	(r.c || []).map(cell => cell ? cell.v : null)
+  	);
+
+  	if (rows.length === 0) return null;
+
+  	// Ultima riga "non vuota" (opzionale ma utile)
+  	const lastNonEmpty = [...rows].reverse().find(r =>
+    	r.some(v => v !== null && String(v).trim() !== "")
+  	) || rows[rows.length - 1];
+
+  	// Se vuoi anche le intestazioni:
+  	const headers = (json.table?.cols || []).map(c => c.label || c.id);
+
+  	return { headers, values: lastNonEmpty };
+	}
+
+	document.getElementById("btn").addEventListener("click", async () => {
+  	const out = document.getElementById("output");
+  	out.textContent = "Caricamento...";
+  	try {
+    	const data = await getLastRow();
+    	if (!data) {
+      	out.textContent = "Nessuna riga trovata.";
+      	return;
+    	}
+
+    	// Mostro risultato in modo leggibile
+    	const asObject = Object.fromEntries(data.headers.map((h, i) => [h, data.values[i]]));
+    	out.textContent = JSON.stringify(asObject, null, 2);
+  	} catch (e) {
+    	out.textContent = `Errore: ${e.message}`;
+  	}
+});
