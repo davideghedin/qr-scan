@@ -44,7 +44,7 @@
             <h2>Ultimo inserimento</h2>
             
             <div>
-                <pre id="output"></pre>
+                <span id="output"></span>
                 <button id="outputBtn">Carica</button>
             </div>
 
@@ -92,7 +92,8 @@
     const readerDiv = document.getElementById("reader");
     const resultDiv1 = document.getElementById("result1");
     const resultDiv2 = document.getElementById("result2");    
-
+    const outSpan = document.getElementById("output");
+        
     let scanner;
 
     startBtn.addEventListener("click", () => {
@@ -135,7 +136,26 @@
     });        
 
 //*********************************************************************************
-        
+    outputBtn.addEventListener("click", async () => {
+      	
+      	outSpan.textContent = "Caricamento...";
+      	try {
+        	const data = await getLastRow();
+        	if (!data) {
+          	outSpan.textContent = "Nessuna riga trovata.";
+          	return;
+        	}
+    
+        	// Mostro risultato in modo leggibile
+        	const asObject = Object.fromEntries(data.headers.map((h, i) => [h, data.values[i]]));
+        	outSpan.textContent = JSON.stringify(asObject, null, 2);
+      	} catch (e) {
+        	outSpan.textContent = `Errore: ${e.message}`;
+      	}
+    });        
+
+//*********************************************************************************
+            
         // Avvio iniziale
         window.onload = startScanner;
 
