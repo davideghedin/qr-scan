@@ -70,7 +70,7 @@ const outputBtn = document.getElementById("outputBtn");
   	return { headers, values: lastNonEmpty };
 	}
 
-	outptBtn.addEventListener("click", async () => {
+	outputBtn.addEventListener("click", async () => {
   	const out = document.getElementById("output");
   	out.textContent = "Caricamento...";
   	try {
