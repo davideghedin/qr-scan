@@ -36,6 +36,8 @@ const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/
                  	`sheet=${encodeURIComponent(SHEET_NAME)}` +
                  	`&tqx=out:json`;
 
+const outputBtn = document.getElementById("outptBtn");
+
 	function extractGvizJson(text) {
   	// Risposta tipica: google.visualization.Query.setResponse({...});
   	const start = text.indexOf("{");
@@ -68,7 +70,7 @@ const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/
   	return { headers, values: lastNonEmpty };
 	}
 
-	document.getElementById("btnOutput").addEventListener("click", async () => {
+	outptBtn.addEventListener("click", async () => {
   	const out = document.getElementById("output");
   	out.textContent = "Caricamento...";
   	try {
