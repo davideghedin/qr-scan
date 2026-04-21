@@ -55,12 +55,8 @@
             <a href=https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&single=true">Link</a>
 
             <h2>Dati da Google Sheets</h2>
-            <table id="data-table">
-                <thead>
-                    <tr id="table-header"></tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
+            <button id="tableBtn">Carica</button>
+            <div id="data-table"></div>
     
             <!--
             <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
@@ -99,11 +95,13 @@
 
 //*********************************************************************************     
     const startBtn = document.getElementById("startBtn");
-    const outputBtn = document.getElementById("outputBtn");    
+    const outputBtn = document.getElementById("outputBtn");  
+    const tableBtn = document.getElementById("tableBtn");      
     const readerDiv = document.getElementById("reader");
     const resultDiv1 = document.getElementById("result1");
     const resultDiv2 = document.getElementById("result2");    
     const outSpan = document.getElementById("output");
+    const tableDiv = document.getElementById("data-table");
         
     let scanner;
 
@@ -167,6 +165,24 @@
       	}
     });        
 
+        //*********************************************************************************
+    tableBtn.addEventListener("click", async () => {
+      	
+      	outSpan.textContent = "Caricamento...";
+      	try {
+        	const data = await getLastRow();
+        	if (!data) {
+          	tableDiv.textContent = "Nessuna riga trovata.";
+          	return;
+        	}
+    
+        	// Mostro risultato in modo leggibile
+        	const asObject = Object.fromEntries(data.headers.map((h, i) => [h, data.values[i]]));
+        	outSpan.textContent = JSON.stringify(asObject, null, 2);
+      	} catch (e) {
+        	outSpan.textContent = `Errore: ${e.message}`;
+      	}
+    });        
 //*********************************************************************************
             
         // Avvio iniziale
