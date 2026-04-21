@@ -54,8 +54,7 @@
         <div id="data" class="page">
             <a href=https://docs.google.com/spreadsheets/d/e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M/pubhtml?gid=1156890236&single=true">Link</a>
 
-            <h2>Dati da Google Sheets</h2>
-            <button id="tableBtn">Carica</button>
+            <button id="tableBtn">Carica dati da Google Sheets</button>
             <div id="data-table"></div>
     
             <!--
@@ -177,7 +176,7 @@
         	}
     
         	// Mostro risultato in modo leggibile
-        	tableDiv.textContent = data;
+        	tableDiv.innerHTML = data;
       	} catch (e) {
         	tableDiv.textContent = `Errore: ${e.message}`;
       	}
