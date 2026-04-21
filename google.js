@@ -69,42 +69,39 @@ async function getLastRow() {
 }
 
 async function createTable() {
-	try {
-		const res = await fetch(endpoint, { cache: "no-store" });
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-		const json = await res.text();
-		
-    	const tableData = json.table;
-    	let html = '<table border="1" style="border-collapse: collapse; width: 100%;">';
-    
-	    // 1. Genera Intestazioni (Label)
-	    html += '<thead><tr>';
-	    tableData.cols.forEach(col => {
-	        html += `<th style="padding: 8px; background: #eee;">${col.label}</th>`;
-	    });
-	    html += '</tr></thead>';
-	
-	    // 2. Genera Righe
-	    html += '<tbody>';
-	    tableData.rows.forEach(row => {
-	        html += '<tr>';
-	        row.c.forEach(cell => {
-	            // Gestione celle nulle o vuote
-	            let value = "";
-	            if (cell && cell.f) {
-	                value = cell.f; // Usa il valore formattato (data leggibile)
-	            } else if (cell && cell.v) {
-	                value = cell.v; // Usa il valore grezzo
-	            }
-	            html += `<td style="padding: 8px;">${value}</td>`;
-	        });
-	        html += '</tr>';
-	    });
-	    html += '</tbody></table>';
-	
-	    return html;
 
-	} catch (error) {
-		console.error('Errore nel caricamento dati:', error);
-	}
+	const res = await fetch(endpoint, { cache: "no-store" });
+	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+	const json = await res.text();
+	
+	const tableData = json.table;
+	let html = '<table border="1" style="border-collapse: collapse; width: 100%;">';
+
+	// 1. Genera Intestazioni (Label)
+	html += '<thead><tr>';
+	tableData.cols.forEach(col => {
+		html += `<th style="padding: 8px; background: #eee;">${col.label}</th>`;
+	});
+	html += '</tr></thead>';
+
+	// 2. Genera Righe
+	html += '<tbody>';
+	tableData.rows.forEach(row => {
+		html += '<tr>';
+		row.c.forEach(cell => {
+			// Gestione celle nulle o vuote
+			let value = "";
+			if (cell && cell.f) {
+				value = cell.f; // Usa il valore formattato (data leggibile)
+			} else if (cell && cell.v) {
+				value = cell.v; // Usa il valore grezzo
+			}
+			html += `<td style="padding: 8px;">${value}</td>`;
+		});
+		html += '</tr>';
+	});
+	html += '</tbody></table>';
+
+	return html;
+
 }
