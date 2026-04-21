@@ -109,14 +109,14 @@
           scanner.stop();
 
           //readerDiv.style.display = "none";
-          resultDiv.innerHTML = `
+          resultDiv1.innerHTML = `
             <div class="success">✔ QR Code letto</div>
             <div>${decodedText}</div>
           `;
           resultDiv1.innerText = inviaAGoogleForms( decodedText );       
         }
       ).catch(err => {
-        resultDiv.innerText = "Errore fotocamera: " + err;
+        resultDiv1.innerText = "Errore fotocamera: " + err;
       });
     });
 
