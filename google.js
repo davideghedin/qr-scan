@@ -70,10 +70,9 @@ async function getLastRow() {
 
 async function createTable() {
 	try {
-		const response = await fetch(endpoint);
-	  	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	  	const raw = await res.text();
-	  	const json = extractGvizJson(raw);
+		const res = await fetch(endpoint, { cache: "no-store" });
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		const json = await res.text();
 		
     	const tableData = json.table;
     	let html = '<table border="1" style="border-collapse: collapse; width: 100%;">';
