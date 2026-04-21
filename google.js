@@ -72,7 +72,8 @@ async function createTable() {
 
 	const res = await fetch(endpoint, { cache: "no-store" });
 	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	const json = await res.text();
+  	const raw = await res.text();
+  	const json = extractGvizJson(raw);
 	
 	const tableData = json.table;
 	let html = '<table border="1" style="border-collapse: collapse; width: 100%;">';
