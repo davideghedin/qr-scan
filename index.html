@@ -168,17 +168,16 @@
         //*********************************************************************************
     tableBtn.addEventListener("click", async () => {
       	
-      	outSpan.textContent = "Caricamento...";
+      	tableDiv.textContent = "Caricamento...";
       	try {
-        	const data = await getLastRow();
+        	const data = await createTable();
         	if (!data) {
           	tableDiv.textContent = "Nessuna riga trovata.";
           	return;
         	}
     
         	// Mostro risultato in modo leggibile
-        	const asObject = Object.fromEntries(data.headers.map((h, i) => [h, data.values[i]]));
-        	outSpan.textContent = JSON.stringify(asObject, null, 2);
+        	tableDiv.textContent = data;
       	} catch (e) {
         	outSpan.textContent = `Errore: ${e.message}`;
       	}
