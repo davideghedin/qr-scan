@@ -30,12 +30,12 @@ function postToGoogleSheet2(name) {
     return "Nome inviato correttamente ✅";
 }
 
-const SPREADSHEET_ID = "e/2PACX-1vRehVbW704F9njWYTtCosZSCsVCorlgevGbm8wsSOU8Z_7kK-1a8MUKFHwcPOxtqpxmipaGj71_r07M";
-const SHEET_NAME = "Risposte del modulo 1";
+const SPREADSHEET_ID = "1Sgze-6dXkRYWNW0fJKTFlNAwXu0RgvfTkxOGvgQnBGw";
+const SHEET_NAME = "1156890236";
 const endpoint = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?` +
-                 	`sheet=${encodeURIComponent(SHEET_NAME)}` +
+                 	`gid=${encodeURIComponent(SHEET_NAME)}` +
                  	`&tqx=out:json`;
-
+//https://docs.google.com/spreadsheets/d/1Sgze-6dXkRYWNW0fJKTFlNAwXu0RgvfTkxOGvgQnBGw/gviz/tq?tqx=out:json&tq&gid=1156890236
 	function extractGvizJson(text) {
   	// Risposta tipica: google.visualization.Query.setResponse({...});
   	const start = text.indexOf("{");
