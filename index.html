@@ -130,9 +130,11 @@
         event.preventDefault(); 
         // Recupera il valore
         const valoreInput = input.value;
-        // 3. Lancia la funzione JS
-        resultDiv2.innerText = postToGoogleSheet2( valoreInput );
-        input.value = "";
+        if (valoreInput && valoreInput.trim() !== "" ) {
+            // 3. Lancia la funzione JS
+            resultDiv2.innerText = postToGoogleSheet2( valoreInput );
+            input.value = "";
+        }
     });        
 
 //*********************************************************************************
