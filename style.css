@@ -73,7 +73,7 @@
 
         /* Elementi interni */
         #reader {
-            width: 100%;
+            width: 50%;
             border-radius: 8px;
             overflow: hidden;
             border: 2px solid #eee;
